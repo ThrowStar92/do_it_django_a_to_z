@@ -20,13 +20,13 @@ class PostDetail(DetailView):
 #         }
 #     )
 
-def single_post_page(request, pk):
-    post =Post.objects.get(pk=pk)
-
-    return render(
-        request,
-        'blog/post_detail.html',
-        {
-            'post':post
-        }
-    )
+# def single_post_page(request, pk):
+#     post =Post.objects.get(pk=pk)
+#
+#     return render(
+#         request,
+#         'blog/post_detail.html',
+#         {
+#             'post':post
+#         }
+#     )
