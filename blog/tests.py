@@ -11,13 +11,13 @@ class TestView(TestCase):
         self.user_obama = User.objects.create_user(username='obama',
         password = 'somepassword')
 
-        self.category_promramming = Category.objects.create(name='programming',slug='programming')
+        self.category_programming = Category.objects.create(name='programming',slug='programming')
         self.category_music = Category.objects.create(name='music',slug='music')
 
         self.post_001 = Post.objects.create(
             title= '첫번째 포스트입니다.',
             content = 'Hello World. We are the world',
-            category= self.category_promramming,
+            category= self.category_programming,
             author = self.user_trump
         )
         self.post_002 = Post.objects.create(
@@ -31,6 +31,22 @@ class TestView(TestCase):
             content='카테고리 없는 컨텐츠!',
             author=self.user_obama
         )
+    def test_category_page(self):
+        response = self.client.get(self.category_programming.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+
+        soup = BeautifulSoup(response.content, 'html.parser')
+        self.navbar_test(soup)
+        self.category_card_test(soup)
+
+        self.assertIn(self.category_programming.name, soup.h1.text)
+
+        main_area = soup.find('div',id= 'main-area')
+        self.assertIn(self.category_programming.name, main_area.text)
+        self.assertIn(self.post_001.title,main_area.text)
+        self.assertNotIn(self.post_002.title, main_area.text)
+        self.assertNotIn(self.post_003.title, main_area.text)
+
     def navbar_test(self, soup):
         navbar = soup.nav
         self.assertIn('Blog',navbar.text)
@@ -51,7 +67,7 @@ class TestView(TestCase):
     def category_card_test(self,soup):
         categries_card= soup.find('div', id = 'categories-card')
         self.assertIn('Categories',categries_card.text)
-        self.assertIn(f'{self.category_promramming.name} ({self.category_promramming.post_set.count()})', categries_card.text)
+        self.assertIn(f'{self.category_programming.name} ({self.category_programming.post_set.count()})', categries_card.text)
         self.assertIn(f'{self.category_music.name} ({self.category_music.post_set.count()})', categries_card.text)
         self.assertIn(f'미분류 (1)', categries_card.text)
 
@@ -176,7 +192,7 @@ class TestView(TestCase):
         main_area = soup.find('div',id= 'main-area')
         post_area = main_area.find('div', id='post-area')
         self.assertIn(self.post_001.title, post_area.text)
-        self.assertIn(self.category_promramming.name,post_area.text)
+        self.assertIn(self.category_programming.name,post_area.text)
 
         self.assertIn(self.user_trump.username.upper(), post_area.text)
 
