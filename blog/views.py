@@ -36,3 +36,8 @@ class PostDetail(DetailView):
 #             'post':post
 #         }
 #     )
+    def get_context_data(self, **kwargs):   #오버라이딩
+        context = super(PostDetail,self).get_context_data()
+        context['categories'] = Category.objects.all()
+        context['no_category_post_count'] = Post.objects.filter(category=None).count()
+        return context
