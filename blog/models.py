@@ -2,6 +2,17 @@ from django.db import models
 from django.contrib.auth.models import User
 import os
 
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique= True)
+    # slug : url을 생성하기 위해 문자를 조합하는 방식
+    slug = models.SlugField(max_length=20, unique=True, allow_unicode= True)
+
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name_plural = 'Categories'
+
+
 class Post(models.Model):
     title = models.CharField(max_length=30)
     hook_text = models.CharField(max_length=100, blank=True)
@@ -15,10 +26,13 @@ class Post(models.Model):
 
     author = models.ForeignKey(User,null=True, on_delete=models.SET_NULL)
 
-
+    # category : 외례키의 성격을 가진다. , 미불류도 포함 > null =True
+    category = models.ForeignKey(Category, null= True, blank = True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'[{self.pk}]{self.title} :: {self.author}'
+
+
 
     def get_absolute_url(self):
         return f'/blog/{self.pk}/'

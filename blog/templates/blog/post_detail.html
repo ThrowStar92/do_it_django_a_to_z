@@ -1,61 +1,49 @@
 {% extends 'blog/base.html' %}
 
 {% block head_title %}
+
     {{ post.title }} - Blog
+
 {% endblock %}
 
 {% block main_area %}
-
-                <div id="post-area">
-                    <!-- Title-->
-                    <h1 class = "mt-4">{{post.title}}</h1>
-                    <h5 class = "text-muted">{{ post.hook_text  }}</h5>
-                    <!-- Author-->
-                    <p class=" "lead>
-                    by
-                    <a href ="#">{{ post.author | upper }}</a>
-                    </p>
-                    <hr>
-
-
+                    <div id="post-area">
+                    <!-- Post content-->
                     <article>
                         <!-- Post header-->
                         <header class="mb-4">
                             <!-- Post title-->
+                            <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+                            <h5 class="text-muted">{{ post.hook_text }}</h5>
 
                             <!-- Post meta content-->
-                            <div class="text-muted fst-italic mb-2">{{ post.created_at }}, 2022 by {{ post.author | upper }}</div>
+                            <div class="text-muted fst-italic mb-2">Posted on {{ post.created_at }} by {{ post.author | upper }}</div>
                             <!-- Post categories-->
                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
                         </header>
-                        <hr>
                         <!-- Preview image figure-->
-
                         <figure class="mb-4">
                             {% if post.head_image %}
-                            <img class="img-fluid rounded" src="{{ post.head_image.url  }}" alt="{{post.title}} head_image" >
+                                <img class="img-fluid rounded" src="{{ post.head_image.url }}" alt="{{ post.title }}" />
                             {% else %}
-                             <img class="img-fluid rounded" src="https://picsum.photos/seed/{{post.id}}/800/200" alt="random_image">
-                            {% endif%}
+                                <img class="card-img-top" src="https://picsum.photos/seed/{{ post.id }}/800/200" alt="random_image" />
+                            {% endif %}
                         </figure>
                         <!-- Post content-->
-                        <hr>
-                       <section class="mb-5">
-                            {{post.content}}
+                        <section class="mb-5">
+                            {{ post.content }}
                         </section>
                         {% if post.file_upload %}
-                            <a href="{{post.file_upload.url}}"
-                               class ="btn btn-outline-primary" role="button" download>
-                                <i class="fa-solid fa-file-excel"></i> {{post.get_file_name}}
+                            <a href="{{ post.file_upload.url }}"
+                               class="btn btn-outline-primary" role="button" download>
+                                <i class="fa-solid fa-file"></i> {{ post.get_file_name }}
                             </a>
-
                         {% endif %}
                     </article>
-                </div>
-
-                <div id = "comment-area">
+                    </div>
                     <!-- Comments section-->
+                    <div id="comment-area">
                     <section class="mb-5">
                         <div class="card bg-light">
                             <div class="card-body">
@@ -97,5 +85,6 @@
                             </div>
                         </div>
                     </section>
-                </div>
+                    </div>
+
 {% endblock %}
