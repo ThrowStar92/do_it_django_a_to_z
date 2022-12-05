@@ -43,7 +43,7 @@
                         </figure>
                         <!-- Post content-->
                         <section class="mb-5">
-                            {{ post.content }}
+                            {{ post.get_content_markdown | safe }}
                         </section>
                         {% if post.tags.exists %}
                             <i class="fas fa-tags"></i>
