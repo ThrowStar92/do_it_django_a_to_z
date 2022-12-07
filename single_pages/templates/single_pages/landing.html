@@ -14,39 +14,29 @@
 {% include 'blog/navbar.html' %}
 
 <section>
-    <div calss="container">
+    <div class="container">
         <div class="row justify-content-between">
             <div class ="col-lg-6 text-light">
                 <h1 class="mt-5">Do It Django</h1>
                 <p>파이썬 진영의 대표적 웹프레임 워크중 하나인 django를 이용해 나만의 사이트 만들기</p>
             </div>
+
             <div class ="col-lg-5 mt-5">
                 <h2 class ="text-light">Blog - Recent Posts</h2>
                 {% for post in recent_posts %}
                     <div class ="card mt-1">
                         <div class ="card-body">
                             <h6><a href="{{ post.get_absolute_url }}" class = "text-decoration-none text-dark">{{ post.title}}</a></h6>
-                        <span class ="badge badge-pill badge-light float-right">
+                            <span class ="badge badge-pill badge-light float-right">
                             <img class ="mr-1 rounded-circle" width="20px" src="{{ post.get_avatar_url }}" alt="{{ post.author }}">
                             {{ post.author.username }}
                             &nbsp;
                             &nbsp;
                             {{ post.created_at }}
-                        </span>
+                            </span>
                         </div>
                     </div>
                 {% endfor %}
-                <div class = "card mt-1">
-                    <div class="card-body">
-                        This is some text within a card body.
-                    </div>
-                </div>
-                <div class="card mt-1">
-                    <div class="card-body">
-                        This is some text within a card body.
-
-                    </div>
-                </div>
             </div>
         </div>
     </div>
