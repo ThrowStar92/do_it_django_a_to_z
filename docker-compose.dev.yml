@@ -1,8 +1,11 @@
+# 도커 컴포스 파일 : 컨테이너 여러대 동시 사용가능
+
 version: '3'
 
 services:
   web:
     build: .
+#    command: python manage.py runserver 0.0.0.0:8000
     command: gunicorn do_it_django_prj.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - ./:/usr/src/app/
@@ -10,15 +13,17 @@ services:
       - 8000:8000
     env_file:
       - ./.env.dev
+    #web컨테이너는 db컨테이너가 실행된 이후 시작된다는 의미
     depends_on:
-    - db
+      - db
+    #db는 postgres 실행하기 위한것.
   db:
-      image: postgres:12.0-alpine
-      volumes:
-        - postgres_data:/var/lib/postgresql/data/
-      environment:
-        - POSTGRES_USER=do_it_django_db_user
-        - POSTGRES_PASSWORD=do_it_django_db_password
-        - POSTGRES_DB=do_it_django_dev
+    image: postgres:12.0-alpine
+    volumes:
+    - postgres_data:/var/lib/postgresql/data/
+    environment:
+    - POSTGRES_USER=do_it_django_db_user
+    - POSTGRES_PASSWORD=do_it_django_db_password
+    - POSTGRES_DB=do_it_django_dev
 volumes:
-    postgres_data:
+  postgres_data:

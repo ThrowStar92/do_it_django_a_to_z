@@ -32,7 +32,7 @@ else:
     ALLOWED_HOSTS = []
 
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -95,11 +95,6 @@ WSGI_APPLICATION = 'do_it_django_prj.wsgi.application'
 
 DATABASES = {
     'default': {
-        #sqlite3는 내장되어 있기에 권한 필요없다.
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-
-        #권한 설정
         'ENGINE': os.environ.get("SQL_ENGINE", 'django.db.backends.sqlite3'),
         'NAME': os.environ.get('SQL_DATABASE', os.path.join(BASE_DIR, 'db.sqlite3')),
         'USER': os.environ.get('SQL_USER', 'user'),
