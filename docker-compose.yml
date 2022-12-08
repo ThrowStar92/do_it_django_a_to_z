@@ -3,14 +3,25 @@
 version: '3'
 
 services:
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/usr/src/app/_static
+      - media_volume:/usr/src/app/_media
+    ports:
+      - 80:80
+    depends_on:
+      - web
   web:
     build: .
 #    command: python manage.py runserver 0.0.0.0:8000
     command: gunicorn do_it_django_prj.wsgi:application --bind 0.0.0.0:8000
     volumes:
+      - static_volume:/usr/src/app/_static
+      - media_volume:/usr/src/app/_media
       - ./:/usr/src/app/
     ports:
-      - 8000:8000
+      - 8000
     env_file:
       - ./.env.prod
     #web컨테이너는 db컨테이너가 실행된 이후 시작된다는 의미
@@ -25,3 +36,5 @@ services:
       - ./.env.prod.db
 volumes:
   postgres_data:
+  static_volume:
+  media_volume:
